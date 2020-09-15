@@ -6,16 +6,20 @@ namespace Model
 {
     public class Competition
     {
-        public List<IParticipant> Participants { get; set; }
-        public Queue<Track> Tracks { get; set; }
+        static List<IParticipant> Participants { get; set; }
+        Queue<Track> Tracks { get; set; }
         public Competition()
         {
-
+            Participants = new List<IParticipant>();
+            Tracks = new Queue<Track>();
         }
-        public void addParticipant(IParticipant participant)
+        public static void addDriver()
         {
-            Participants.Add(participant);
+            Driver driver1 = new Driver();
+            Participants.Add(driver1);
+        }
+        public static void addTrack()
+        {
         }
     }
-
 }

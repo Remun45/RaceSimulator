@@ -6,9 +6,9 @@ namespace Model
 {
     interface IParticipant
     {
-        string Name { get; set; }
-        int Points { get; set; }
-        IEquipment Equipment { get; set; }
-        TeamColors TeamColor { get; set; }
+        public string Name { get; set; }
+        public int Points { get; set; }
+        public IEquipment Equipment { get; set; }
+        public TeamColors TeamColor { get; set; }
     }
 }

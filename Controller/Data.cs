@@ -12,9 +12,5 @@ namespace Controller
        {
             competition = new Competition();
        }
-       static void addParticipants()
-       {
-            competition.addParticipant()
-       }
     }
 }
