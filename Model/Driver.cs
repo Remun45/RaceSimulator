@@ -11,8 +11,12 @@ namespace Model
         public IEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
 
-        Driver(String name, int Points, IEquipment equipment, TeamColors teamColors)
+        public Driver(String name, int points, IEquipment equipment, TeamColors teamColors)
         {
+            this.Name = name;
+            this.Points = points;
+            this.Equipment = equipment;
+            this.TeamColor = teamColors;
         }
         public Driver() { }
     }

@@ -6,17 +6,17 @@ namespace Model
 {
     public class Track
     {
-        string Name { get; set; }
-        LinkedList<Section> Sections { get; set; }
+        public string Name { get; set; }
+        public LinkedList<Section> Sections { get; set; }
 
-        Track(string name, LinkedList<Section> sections)
+        public Track(string name, LinkedList<Section> sections)
         {
             Name = name;
-            Sections = sections;
+            Sections = new LinkedList<Section>();
         }
-        public Track()
+        public Track(string name)
         {
-
+            this.Name = name;
         }
     }
 }

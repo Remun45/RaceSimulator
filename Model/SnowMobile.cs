@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Model
 {
-    class SnowMobile
+    public class SnowMobile : IEquipment
     {
+        public int Quality { get; set; }
+        public int Performance { get; set; }
+        public int Speed { get; set; }
+        public bool isBroken { get; set; }
     }
 }
