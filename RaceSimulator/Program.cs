@@ -11,6 +11,7 @@ namespace RaceSimulator
             Data.Initialize();
             Data.NextRace();
             Console.WriteLine(Data.CurrentRace.Track.Name);
+            Visualisatie.DrawTrack(Data.CurrentRace.Track);
 
             for (; ; )
             {
