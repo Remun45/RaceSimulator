@@ -30,10 +30,24 @@ namespace Controller
         }
         public static void AddTrack()
         {
-            Track track1 = new Track("Snowy place");
-            Track track2 = new Track("Snow desert");
-            Competition.Tracks.Enqueue(track1);
-            Competition.Tracks.Enqueue(track2);
+            Track elburg = new Track("Circuit Elburg", new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.StartGrid, SectionTypes.StartGrid });
+            Competition.Tracks.Enqueue(elburg);
+            Track peter = new Track("Peter", new SectionTypes[] {
+            SectionTypes.StartGrid,
+            SectionTypes.StartGrid,
+            SectionTypes.Finish,
+            SectionTypes.RightCorner,
+            SectionTypes.Straight,
+            SectionTypes.RightCorner,
+            SectionTypes.Straight,
+            SectionTypes.Straight,
+            SectionTypes.Straight,
+            SectionTypes.RightCorner,
+            SectionTypes.Straight,
+            SectionTypes.RightCorner,
+            });
+            Competition.Tracks.Enqueue(peter);
+            CurrentRace = new Race(Competition.Tracks.Peek(), Competition.Participants);
         }
         public static void NextRace()
         {

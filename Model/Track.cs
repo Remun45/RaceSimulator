@@ -24,7 +24,7 @@ namespace Model
             foreach (SectionTypes sectionType in sectionTypes)
             {
                 Section section = new Section(sectionType);
-                sections.AddFirst(section);
+                sections.AddLast(section);
             }
             return sections;
         }
