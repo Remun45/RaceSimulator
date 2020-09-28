@@ -42,6 +42,8 @@ namespace RaceSimulator
                     Console.WriteLine(partOfTrack);
                     y += 1;
                 }
+                section.X = x;
+                section.Y = y;
                 direction = newDirection;
                 SetY();
                 SetX();
