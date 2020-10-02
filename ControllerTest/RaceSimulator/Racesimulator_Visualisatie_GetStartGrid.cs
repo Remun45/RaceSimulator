@@ -10,16 +10,16 @@ namespace ControllerTest.RaceSimulator
     class RaceSimulator_Visualisatie_GetStartGrid
     {
         #region graphics
-        private static string[] _finishHorizontal = { "----", "  # ", "  # ", "----" };
-        private static string[] _finishVertical = { "|  |", "|##|", "|##|", "|  |" };
-        private static string[] _startHorizontal = { "----", " ]  ", "  ] ", "----" };
-        private static string[] _startVertical = { "|  |", "|_ |", "| _|", "|  |" };
-        private static string[] _westToSouth = { "--\\ ", "   \\", "   |", "|  |" };
-        private static string[] _northToWest = { "/  |", "   |", "   /", "--/ " };
-        private static string[] _eastToNorth = { "|  \\", "|   ", "\\   ", " \\--" };
-        private static string[] _southToEast = { " /--", "/   ", "|   ", "|  |" };
-        private static string[] _horizontalTrack = { "----", "    ", "    ", "----", };
-        private static string[] _verticalTrack = { "|  |", "|  |", "|  |", "|  |" };
+        private static string[] _finishHorizontal = { "----", "  1#", "  2#", "----" };
+        private static string[] _finishVertical = { "|12|", "|##|", "|##|", "|  |" };
+        private static string[] _startHorizontal = { "----", " 1] ", " 2] ", "----" };
+        private static string[] _startVertical = { "|12|", "|_ |", "| _|", "|  |" };
+        private static string[] _westToSouth = { "--\\ ", "  2\\", " 1 |", "|  |" };
+        private static string[] _northToWest = { "/  |", "  2|", " 1 /", "--/ " };
+        private static string[] _eastToNorth = { "|  \\", "|2  ", "\\ 1 ", " \\--" };
+        private static string[] _southToEast = { " /--", "/12 ", "|   ", "|  |" };
+        private static string[] _horizontalTrack = { "----", " 1  ", "  2 ", "----", };
+        private static string[] _verticalTrack = { "|  |", "|12|", "|  |", "|  |" };
         #endregion
         [SetUp]
         public void SetUp()

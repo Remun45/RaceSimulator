@@ -19,5 +19,9 @@ namespace Model
             this.TeamColor = teamColors;
         }
         public Driver() { }
+        public char GetFirstLetter()
+        {
+            return Name[0];
+        }
     }
 }

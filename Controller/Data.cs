@@ -14,6 +14,7 @@ namespace Controller
             Competition = new Competition();
             AddTrack();
             AddDriver();
+            NextRace();
        }
         public static void AddDriver()
         {
@@ -21,16 +22,20 @@ namespace Controller
             Driver driver2 = new Driver("Captain Pete Cooper", 0, new SnowMobile(), TeamColors.Red);
             Driver driver3 = new Driver("Lionel Messie", 0, new SnowMobile(), TeamColors.Blue);
             Driver driver4 = new Driver("Raymond van Barneveld", 0, new SnowMobile(), TeamColors.Yellow);
+            Driver driver5 = new Driver("Ikke", 0, new SnowMobile(), TeamColors.Grey);
+            Driver driver6 = new Driver("Flikke", 0, new SnowMobile(), TeamColors.Pink);
 
             Competition.Participants.Add(driver1);
             Competition.Participants.Add(driver2);
             Competition.Participants.Add(driver3);
             Competition.Participants.Add(driver4);
+            Competition.Participants.Add(driver5);
+            Competition.Participants.Add(driver6);
 
         }
         public static void AddTrack()
         {
-            Track elburg = new Track("Circuit Elburg", new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.StartGrid, SectionTypes.StartGrid });
+            Track elburg = new Track("Circuit Elburg", new SectionTypes[] { SectionTypes.StartGrid, SectionTypes.StartGrid, SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner});
             Competition.Tracks.Enqueue(elburg);
             Track peter = new Track("Peter", new SectionTypes[] {
             SectionTypes.StartGrid,
@@ -47,7 +52,7 @@ namespace Controller
             SectionTypes.RightCorner,
             });
             Competition.Tracks.Enqueue(peter);
-            CurrentRace = new Race(Competition.Tracks.Peek(), Competition.Participants);
+            //CurrentRace = new Race(Competition.Tracks.Peek(), Competition.Participants);
         }
         public static void NextRace()
         {

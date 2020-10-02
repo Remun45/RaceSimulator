@@ -3,16 +3,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+using System.Timers;
 
 namespace Controller
 {
+    public delegate void OnDriversChanged(object sender, DriversChangedEventArgs args);
     public class Race
     {
-        public Track Track {get;set;}
+        public Track Track { get; set; }
         public List<IParticipant> Deelnemers { get; set; }
         public DateTime StartTime { get; set; }
+        public event OnDriversChanged DriversChanged;
         private Random _random;
         private Dictionary<Section, SectionData> _positions;
+        private Timer _timer;
+        public Race(Track track, List<IParticipant> deelnemers)
+        {
+            this.Track = track;
+            this.Deelnemers = deelnemers;
+
+            _random = new Random(DateTime.Now.Millisecond);
+            StartTime = new DateTime();
+            _positions = new Dictionary<Section, SectionData>();
+
+            RandomizeEquipment();
+            SetAllSections();
+            SetStartPositions();
+
+            _timer = new Timer(500);
+            _timer.Elapsed += OnTimedEvent;
+        }
+        public void OnTimedEvent(object sender, ElapsedEventArgs args)
+        {
+            foreach (KeyValuePair<Section, SectionData> valuePair in _positions)
+            {
+                if (valuePair.Value.Left != null)
+                {
+
+                }
+            }
+        }
+        public void Start()
+        {
+            _timer.Start();
+        }
         public SectionData GetSectionData(Section section)
         {
             if (!_positions.ContainsKey(section))
@@ -20,14 +54,6 @@ namespace Controller
                 _positions.Add(section, new SectionData());
             }
             return _positions[section];
-        }
-        public Race(Track track, List<IParticipant> deelnemers)
-        {
-            this.Track = track;
-            this.Deelnemers = deelnemers;
-            _random = new Random(DateTime.Now.Millisecond);
-            StartTime = new DateTime();
-            _positions = new Dictionary<Section, SectionData>();
         }
         public void RandomizeEquipment()
         {
@@ -37,28 +63,37 @@ namespace Controller
                 deelnemer.Equipment.Quality = _random.Next();
             }
         }
-        public void setStartPositions()
+        public void SetStartPositions()
         {
             int participants = 0;
-            foreach (KeyValuePair<Section, SectionData> valuePair in _positions)
+            int max = Deelnemers.Count;
+            foreach (KeyValuePair<Section, SectionData> keyValue in _positions)
             {
-                if (valuePair.Equals(SectionTypes.StartGrid))
+                if (keyValue.Key.SectionType == SectionTypes.StartGrid)
                 {
-                    if (Deelnemers[participants] == null)
+                    if (participants+1 < max)
                     {
-                        break;
-                    }
-                    valuePair.Value.Left = Deelnemers[participants];
-                    valuePair.Value.DistanceLeft = 1;
-                    // check if there are no more participants
-                    if (Deelnemers[participants + 1] == null)
+                        keyValue.Value.Left = Deelnemers[participants];
+                        keyValue.Value.Right = Deelnemers[participants + 1];
+                        participants += 2;
+                    } else if (participants < max)
                     {
-                        break;
+                        keyValue.Value.Left = Deelnemers[participants];
+                        participants += 1;
                     }
-                    valuePair.Value.Right = Deelnemers[participants];
-                    valuePair.Value.DistanceRight = 1;
                 }
             }
+        }
+        public void SetAllSections()
+        {
+            foreach (Section section in Track.Sections)
+            {
+                _positions.Add(section, new SectionData());
+            }
+        }
+        public void SetDeelnemerNextSection()
+        {
+
         }
     }
 }

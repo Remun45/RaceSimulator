@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Controller;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,19 +12,20 @@ namespace RaceSimulator
         public static int y { get; set; }
         public static int direction { get; set; }
         public static int newDirection { get; set; }
+        public static Race Race { get; set; }
         public static void Initialize() { }
 
         #region graphics
-        private static string[] _finishHorizontal = { "----", "  # ", "  # ", "----" };
-        private static string[] _finishVertical = { "|  |", "|##|", "|##|", "|  |" };
-        private static string[] _startHorizontal = { "----", " ]  ", "  ] ", "----" };
-        private static string[] _startVertical = { "|  |", "|_ |", "| _|", "|  |" };
-        private static string[] _westToSouth = { "--\\ ", "   \\", "   |", "|  |" };
-        private static string[] _northToWest = { "/  |", "   |", "   /", "--/ " };
-        private static string[] _eastToNorth = { "|  \\", "|   ", "\\   ", " \\--" };
-        private static string[] _southToEast = { " /--", "/   ", "|   ", "|  |" };
-        private static string[] _horizontalTrack = { "----", "    ", "    ", "----", };
-        private static string[] _verticalTrack = { "|  |", "|  |", "|  |", "|  |" };
+        private static string[] _finishHorizontal = { "----", "  1#", "  2#", "----" };
+        private static string[] _finishVertical = { "|12|", "|##|", "|##|", "|  |" };
+        private static string[] _startHorizontal = { "----", " 1] ", " 2] ", "----" };
+        private static string[] _startVertical = { "|12|", "|_ |", "| _|", "|  |" };
+        private static string[] _westToSouth = { "--\\ ", "  2\\", " 1 |", "|  |" };
+        private static string[] _northToWest = { "/  |", "  2|", " 1 /", "--/ " };
+        private static string[] _eastToNorth = { "|  \\", "|2  ", "\\ 1 ", " \\--" };
+        private static string[] _southToEast = { " /--", "/12 ", "|   ", "|  |" };
+        private static string[] _horizontalTrack = { "----", " 1  ", "  2 ", "----", };
+        private static string[] _verticalTrack = { "|  |", "|12|", "|  |", "|  |" };
         #endregion
 
         public static void DrawTrack(Track track)
@@ -38,8 +40,10 @@ namespace RaceSimulator
                 string[] graphics = GetGoodGraphics(section.SectionType, direction);
                 foreach (string partOfTrack in graphics)
                 {
+                    string tekst = "";
+                    tekst = ChangeStrings(partOfTrack, Race.GetSectionData(section).Left, Race.GetSectionData(section).Right);
                     Console.SetCursorPosition(x, y);
-                    Console.WriteLine(partOfTrack);
+                    Console.WriteLine(tekst);
                     y += 1;
                 }
                 section.X = x;
@@ -51,7 +55,7 @@ namespace RaceSimulator
         }
         public static string[] GetGoodGraphics(SectionTypes section, int direction)
         {
-            switch (section) 
+            switch (section)
             {
                 case SectionTypes.StartGrid:
                     return GetStartGrid(direction);
@@ -71,7 +75,8 @@ namespace RaceSimulator
             if (direction == 0 || direction == 2)
             {
                 return _startVertical;
-            } else
+            }
+            else
             {
                 return _startHorizontal;
             }
@@ -105,15 +110,18 @@ namespace RaceSimulator
             {
                 newDirection = 3;
                 return _westToSouth;
-            } else if (direction == 1)
+            }
+            else if (direction == 1)
             {
                 newDirection = 0;
                 return _northToWest;
-            }else if (direction == 2)
+            }
+            else if (direction == 2)
             {
                 newDirection = 1;
                 return _eastToNorth;
-            }else
+            }
+            else
             {
                 newDirection = 2;
                 return _southToEast;
@@ -147,7 +155,8 @@ namespace RaceSimulator
             if (direction == 1)
             {
                 x += 4;
-            } else if (direction  == 3)
+            }
+            else if (direction == 3)
             {
                 x -= 4;
             }
@@ -157,10 +166,34 @@ namespace RaceSimulator
             if (direction == 1 || direction == 3)
             {
                 y -= 4;
-            } else if (direction == 0)
+            }
+            else if (direction == 0)
             {
                 y -= 8;
             }
+        }
+        public static string ChangeStrings(String tekst, IParticipant een, IParticipant twee)
+        {
+            if (tekst.Contains('1') && een != null)
+            {
+                tekst = tekst.Replace('1', een.GetFirstLetter());
+            } else
+            {
+                tekst = tekst.Replace('1', ' ');
+
+            }
+            if (tekst.Contains('2') && twee != null)
+            {
+                tekst = tekst.Replace('2', twee.GetFirstLetter());
+            } else
+            {
+                tekst = tekst.Replace('2', ' ');
+            }
+            return tekst;
+        }
+        public static void OnDriversChanged(object sender, DriversChangedEventArgs args)
+        {
+            DrawTrack(args.Track);
         }
     }
 }
