@@ -23,8 +23,8 @@ namespace ControllerTest.RaceSimulator
         public void ChangeStrings_Should_Return(string tekst, string expected)
         {
             //setup
-            IParticipant een = new Driver("Remon", 0, new SnowMobile(), TeamColors.Red);
-            IParticipant twee = new Driver("Peter", 0, new SnowMobile(), TeamColors.Red);
+            IParticipant een = new Driver("Remon", 0, new SnowMobile(5, 1, 5, false), TeamColors.Red);
+            IParticipant twee = new Driver("Peter", 0, new SnowMobile(5, 1, 5, false), TeamColors.Red);
 
             //action
             var result = Visualisatie.ChangeStrings(tekst, een, twee);

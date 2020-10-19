@@ -2,18 +2,28 @@
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace RaceSimulator
 {
     public static class Visualisatie
     {
-        public static int x { get; set; }
-        public static int y { get; set; }
-        public static int direction { get; set; }
-        public static int newDirection { get; set; }
+        // variables
+        public static int X { get; set; }
+        public static int Y { get; set; }
+        public static int Direction { get; set; }
+        public static int NewDirection { get; set; }
         public static Race Race { get; set; }
-        public static void Initialize() { }
+
+        // initialize method
+        public static void Initialize(Race race)
+        {
+            Race = race;
+            Race.DriversChanged += OnDriversChanged;
+            Race.StartNextRace += StartNextRace;
+            DrawTrack(Race.Track);
+        }
 
         #region graphics
         private static string[] _finishHorizontal = { "----", "  1#", "  2#", "----" };
@@ -28,31 +38,34 @@ namespace RaceSimulator
         private static string[] _verticalTrack = { "|  |", "|12|", "|  |", "|  |" };
         #endregion
 
+        // draw track on console
         public static void DrawTrack(Track track)
         {
-            y = 10;
-            x = 30;
-            direction = 1;
-            newDirection = 1;
+            //Console.Clear();
+            Y = 0;
+            X = 30;
+            Direction = 1;
+            NewDirection = 1;
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (Section section in track.Sections)
             {
-                string[] graphics = GetGoodGraphics(section.SectionType, direction);
+                string[] graphics = GetGoodGraphics(section.SectionType, Direction);
                 foreach (string partOfTrack in graphics)
                 {
                     string tekst = "";
                     tekst = ChangeStrings(partOfTrack, Race.GetSectionData(section).Left, Race.GetSectionData(section).Right);
-                    Console.SetCursorPosition(x, y);
+                    Console.SetCursorPosition(X, Y);
                     Console.WriteLine(tekst);
-                    y += 1;
+                    Y += 1;
                 }
-                section.X = x;
-                section.Y = y;
-                direction = newDirection;
+                Direction = NewDirection;
                 SetY();
                 SetX();
             }
+            Console.SetCursorPosition(X, Y+30);
         }
+
+        //  get graphics functions
         public static string[] GetGoodGraphics(SectionTypes section, int direction)
         {
             switch (section)
@@ -108,22 +121,22 @@ namespace RaceSimulator
         {
             if (direction == 0)
             {
-                newDirection = 3;
+                NewDirection = 3;
                 return _westToSouth;
             }
             else if (direction == 1)
             {
-                newDirection = 0;
+                NewDirection = 0;
                 return _northToWest;
             }
             else if (direction == 2)
             {
-                newDirection = 1;
+                NewDirection = 1;
                 return _eastToNorth;
             }
             else
             {
-                newDirection = 2;
+                NewDirection = 2;
                 return _southToEast;
             }
         }
@@ -131,69 +144,104 @@ namespace RaceSimulator
         {
             if (direction == 0)
             {
-                newDirection = 1;
+                NewDirection = 1;
                 return _southToEast;
             }
             else if (direction == 1)
             {
-                newDirection = 2;
+                NewDirection = 2;
                 return _westToSouth;
             }
             else if (direction == 2)
             {
-                newDirection = 3;
+                NewDirection = 3;
                 return _northToWest;
             }
             else
             {
-                newDirection = 0;
+                NewDirection = 0;
                 return _eastToNorth;
             }
         }
+
+        // set X and Y
         public static void SetX()
         {
-            if (direction == 1)
+            if (Direction == 1)
             {
-                x += 4;
+                X += 4;
             }
-            else if (direction == 3)
+            else if (Direction == 3)
             {
-                x -= 4;
+                X -= 4;
             }
         }
         public static void SetY()
         {
-            if (direction == 1 || direction == 3)
+            if (Direction == 1 || Direction == 3)
             {
-                y -= 4;
+                Y -= 4;
             }
-            else if (direction == 0)
+            else if (Direction == 0)
             {
-                y -= 8;
+                Y -= 8;
             }
         }
+
+        // set good characters in strings
         public static string ChangeStrings(String tekst, IParticipant een, IParticipant twee)
         {
+            char first = 'X';
+
             if (tekst.Contains('1') && een != null)
             {
-                tekst = tekst.Replace('1', een.GetFirstLetter());
+                if (!een.Equipment.isBroken)
+                {
+                    first = een.GetFirstLetter();
+                }
+                tekst = tekst.Replace('1', first);
             } else
             {
                 tekst = tekst.Replace('1', ' ');
 
             }
+
+            char second = 'X';
             if (tekst.Contains('2') && twee != null)
             {
-                tekst = tekst.Replace('2', twee.GetFirstLetter());
+                if (!twee.Equipment.isBroken)
+                {
+                    second = twee.GetFirstLetter();
+                }
+                tekst = tekst.Replace('2', second);
             } else
             {
                 tekst = tekst.Replace('2', ' ');
             }
             return tekst;
         }
+
+        // events, when drivers change and when next race gets started
         public static void OnDriversChanged(object sender, DriversChangedEventArgs args)
         {
             DrawTrack(args.Track);
+        }
+        public static void StartNextRace(object sender, EventArgs args)
+        {
+            Console.Clear();
+            Race.DriversChanged -= OnDriversChanged;
+            Race.StartNextRace -= StartNextRace;
+            Race.RaceFinished -= Data.Competition.OnRaceFinished;
+            Data.NextRace();
+            if (Data.CurrentRace != null)
+            {
+                Initialize(Data.CurrentRace);
+            }
+            else
+            {
+                Console.SetCursorPosition(5,5);
+                Console.WriteLine("Alle races zijn afgelopen");
+            }
         }
     }
 }

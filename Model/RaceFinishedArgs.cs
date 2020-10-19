@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Model
 {
-    public class DriversChangedEventArgs : EventArgs
+    public class RaceFinishedArgs : EventArgs
     {
+        public Stack<IParticipant> Eindstand { get; set; }
         public Track Track { get; set; }
     }
-
 }

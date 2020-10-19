@@ -10,5 +10,13 @@ namespace Model
         public int Performance { get; set; }
         public int Speed { get; set; }
         public bool isBroken { get; set; }
+
+        public SnowMobile(int quality, int performance, int speed, bool isBrokenlol)
+        {
+            Quality = quality;
+            Performance = performance;
+            Speed = speed;
+            isBroken = isBrokenlol;
+        }
     }
 }
